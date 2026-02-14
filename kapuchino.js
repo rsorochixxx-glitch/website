@@ -1,11 +1,8 @@
-var count = 0
+let count = 0;
+const tg = window.Telegram.WebApp;
 
-function onClickButton(el) {
+document.getElementById('btn').addEventListener('click', () => {
     count++;
-    el.innerHTML = "Вы нажали кнопку:" + count;
-}
-const sendDataToBot = () => {
-const data = JSON.stringify({ action: "confirm", value: "yes" });
-Telegram.WebApp.sendData(data);
-};
-document.getElementById('confirmButton').addEventListener('click', sendDataToBot);
+    // Отправляем данные боту (работает только если Web App открыт через KeyboardButton)
+    tg.sendData(count.toString());
+});
