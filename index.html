@@ -9,13 +9,11 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         var count = 0
-
         function onClickButton(el) {
             count++;
             el.innerHTML = "Вы нажали кнопку:" + count;
         }
-        const data = JSON.stringify({ action: "confirm", value: "yes" });
-        Telegram.WebApp.sendData(data);
+        Telegram.WebApp.sendData(count);
     </script>
 </body>
 </html>
