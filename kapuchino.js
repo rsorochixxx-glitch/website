@@ -4,7 +4,8 @@ function onClickButton(el) {
     count++;
     el.innerHTML = "Вы нажали кнопку:" + count;
 }
-let tg = window.Telegram.WebApp;
-tg.expand();
-tg.sendData(tg.toString())
-tg.close();
+const sendDataToBot = () => {
+const data = JSON.stringify({ action: "confirm", value: "yes" });
+Telegram.WebApp.sendData(data);
+};
+document.getElementById('confirmButton').addEventListener('click', sendDataToBot);
