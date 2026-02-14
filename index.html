@@ -5,16 +5,6 @@
 </head>
 <body>
     <button id="btn">Нажми меня!</button>
-
-    <script>
-        let count = 0;
-        const tg = window.Telegram.WebApp;
-        
-        document.getElementById('btn').addEventListener('click', () => {
-            count++;
-            // Отправляем данные боту (работает только если Web App открыт через KeyboardButton)
-            tg.sendData(count.toString());
-        });
-    </script>
+    <script src="kapuchino.js"></script>
 </body>
 </html>
