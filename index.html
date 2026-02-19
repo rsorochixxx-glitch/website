@@ -21,7 +21,7 @@
             const queryId = tg.initDataUnsafe.query_id; // Берем ID сессии
             
             // Отправляем данные на ТВОЙ сервер (бэкенд)
-            await fetch('https://www.pythonanywhere.com/user/Roman9128/files/home/Roman9128/mysite/main.py', {
+            await fetch('https://roman9128.pythonanywhere.com', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ query_id: queryId, count: count })
