@@ -18,16 +18,22 @@
         };
 
         document.getElementById('send').onclick = async () => {
-            const queryId = tg.initDataUnsafe.query_id; // Берем ID сессии
+            const queryId = tg.initDataUnsafe.query_id; // Важно для Inline
             
-            // Отправляем данные на ТВОЙ сервер (бэкенд)
-            await fetch('https://roman9128.pythonanywhere.com', {
+            // ПРАВИЛЬНЫЙ URL твоего сервера на PythonAnywhere
+            // Мы отправляем данные на эндпоинт /web-data
+            const url = 'https://roman9128.pythonanywhere.com'; 
+
+            await fetch(url, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ query_id: queryId, count: count })
+                body: JSON.stringify({ 
+                    query_id: queryId, 
+                    count: count 
+                })
             });
             
-            tg.close(); // Закрываем Web App
+            tg.close();
         };
     </script>
 </body>
