@@ -5,9 +5,9 @@
 </head>
 <body>
     <h1 id="display">0</h1>
+    <h1 id="display1">0</h1>
     <button id="add">Нажать</button>
     <button id="send">Готово (Отправить)</button>
-    <a href="http://127.0.0.1:8000" class="my-button">ПерейтИ</a>
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -20,20 +20,16 @@
 
         document.getElementById('send').onclick = async () => {
             const queryId = tg.initDataUnsafe.query_id; // Важно для Inline
-            
-            // ПРАВИЛЬНЫЙ URL твоего сервера на PythonAnywhere
-            // Мы отправляем данные на эндпоинт /web-data
-            const url = 'http://127.0.0.1:8000/'; 
+            document.getElementById('display1').innerText = queryId;
 
-            await fetch(url, {
+            await fetch('http://127.0.0.1:8000/', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ 
-                    query_id: queryId, 
-                    count: count 
+                body: JSON.stringify({
+                    query_id: queryId,
+                    count: count
                 })
             });
-            
             tg.close();
         };
     </script>
