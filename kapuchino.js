@@ -1,5 +1,4 @@
 const tg = window.Telegram.WebApp;
-alert(JSON.stringify(tg.initDataUnsafe));
 let count = 0;
 
 document.getElementById('add').onclick = () => {
@@ -20,4 +19,5 @@ document.getElementById('send').onclick = async () => {
     // Вывод результата в консоль браузера
     console.log("Ответ от сервера:", result.echo);
 };
+
 
