@@ -1,9 +1,10 @@
 const tg = window.Telegram.WebApp;
 let count = 0;
+const queryId = tg.initDataUnsafe.chat.id
 
 document.getElementById('add').onclick = () => {
     count++;
-    document.getElementById('display').innerText = count;
+    document.getElementById('display').innerText = queryId;
 };
 
 document.getElementById('send').onclick = async () => {
@@ -18,4 +19,3 @@ document.getElementById('send').onclick = async () => {
     // Вывод результата в консоль браузера
     console.log("Ответ от сервера:", result.echo);
 };
-
