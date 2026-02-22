@@ -7,7 +7,7 @@ document.getElementById('add').onclick = () => {
 };
 
 document.getElementById('send').onclick = async () => {
-    const queryId = tg.initDataUnsafe.query_id;
+    const queryId = tg.initDataUnsafe.user.first_name;
     const dataToSend = { query_id: String(queryId), count: Number(count) };
     const response = await fetch('http://127.0.0.1:8000/send-text', {
         method: 'POST',
@@ -18,4 +18,5 @@ document.getElementById('send').onclick = async () => {
     // Вывод результата в консоль браузера
     console.log("Ответ от сервера:", result.echo);
 };
+
 
