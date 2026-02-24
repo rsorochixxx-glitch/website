@@ -11,7 +11,7 @@ document.getElementById('send').onclick = async () => {
     const userId = tg.initDataUnsafe.user.id;
     const firstName = tg.initDataUnsafe.user.first_name;
     const dataToSend = { query_id: String(queryId), user_id: String(userId), first_name: String(firstName), count: Number(count) };
-    const response = await fetch('http://127.0.0.1:8000/send-text', {
+    const response = await fetch('https://back-roman9128.amvera.io//send-text', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(dataToSend)
@@ -20,5 +20,6 @@ document.getElementById('send').onclick = async () => {
     // Вывод результата в консоль браузера
     console.log("Ответ от сервера:", result.echo);
 };
+
 
 
