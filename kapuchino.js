@@ -11,7 +11,7 @@ document.getElementById('send').onclick = async () => {
     const userId = tg.initDataUnsafe.user.id;
     const firstName = tg.initDataUnsafe.user.first_name;
     const dataToSend = { query_id: String(queryId), user_id: String(userId), first_name: String(firstName), count: Number(count) };
-    const response = await fetch('https://back-roman9128.amvera.io//send-text', {
+    const response = await fetch('https://back-roman9128.amvera.io/send-text', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(dataToSend)
@@ -19,3 +19,4 @@ document.getElementById('send').onclick = async () => {
     const result = await response.json();
     document.getElementById('score').innerText = result.echo;
 };
+
