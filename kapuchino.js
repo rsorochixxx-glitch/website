@@ -19,4 +19,3 @@ document.getElementById('send').onclick = async () => {
     const result = await response.json();
     document.getElementById('score').innerText = result.echo;
 };
-
