@@ -17,9 +17,5 @@ document.getElementById('send').onclick = async () => {
         body: JSON.stringify(dataToSend)
     });
     const result = await response.json();
-    // Вывод результата в консоль браузера
-    console.log("Ответ от сервера:", result.echo);
+    document.getElementById('score').innerText = result.echo;
 };
-
-
-
