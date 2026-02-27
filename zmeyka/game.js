@@ -43,9 +43,12 @@ let food = generateFood();
 function setDir(newDir) {
     if (changingDirection) return;
     if (newDir == "left" && dir != "right") dir = "left";
-@@ -49,21 +32,18 @@ function setDir(newDir) {
+    else if (newDir == "right" && dir != "left") dir = "right";
+    else if (newDir == "up" && dir != "down") dir = "up";
+    else if (newDir == "down" && dir != "up") dir = "down";
     changingDirection = true;
 }
+
 
 // Клавиатура
 document.addEventListener("keydown", event => {
@@ -65,7 +68,17 @@ document.addEventListener('touchstart', e => {
 
 document.addEventListener('touchend', e => {
     let xDiff = e.changedTouches[0].screenX - touchX;
-@@ -75,64 +55,74 @@ document.addEventListener('touchend', e => {
+    let yDiff = e.changedTouches[0].screenY - touchY;
+
+    // Проверяем, какой жест был длиннее: по горизонтали или вертикали
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        // Движение по горизонтали
+        if (xDiff > 0) setDir("right");
+        else setDir("left");
+    } else {
+        // Движение по вертикали
+        if (yDiff > 0) setDir("down");
+        else setDir("up");
     }
 }, false);
 
