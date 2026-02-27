@@ -137,4 +137,4 @@ function drawGame() {
     snake.unshift(newHead);
     changingDirection = false; // Сброс блокировки поворота
 }
-let gameInterval = setInterval(drawGame, 600);
+let gameInterval = setInterval(drawGame, 200);
