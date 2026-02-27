@@ -135,4 +135,4 @@ function drawGame() {
     changingDirection = false; // Сброс блокировки поворота
 }
 
-let gameInterval = setInterval(drawGame, 100);
+let gameInterval = setInterval(drawGame, 300);
