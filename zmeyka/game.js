@@ -124,5 +124,5 @@ function showGameOver() {
     canvas.addEventListener('click', () => location.reload(), {once: true});
 }
 
-let gameInterval = setInterval(drawGame, 230); // 400 - оптимальная скорость для новичка
+let gameInterval = setInterval(drawGame, 150); // 400 - оптимальная скорость для новичка
 
