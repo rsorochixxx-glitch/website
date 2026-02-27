@@ -120,7 +120,7 @@ function drawGame() {
     if (snakeX == food.x && snakeY == food.y) {
         score++;
         food = generateFood();
-        tg.HapticFeedback.impactOccurred("medium");
+        tg.HapticFeedback.impactOccurred("heavy");
     } else {
         snake.pop();
     }
