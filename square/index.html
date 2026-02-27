@@ -2,22 +2,40 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Простая игра</title>
+    <!-- Важно для мобилок: запрещаем зум -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Telegram Mini Game</title>
+    <!-- Подключаем скрипт Telegram -->
+    <script src="https://telegram.org"></script>
     <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden; 
+            font-family: sans-serif;
+            background-color: var(--tg-theme-bg-color, #ffffff); /* Цвета из темы TG */
+            color: var(--tg-theme-text-color, #000000);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { margin: 10px 0; font-size: 20px; }
         #game-box {
-            width: 400px;
-            height: 400px;
-            border: 2px solid black;
+            width: 90vw; /* Адаптивность под ширину экрана */
+            height: 70vh; /* Адаптивность под высоту */
+            border: 2px solid var(--tg-theme-button-color, #0088cc);
             position: relative;
-            background-color: #f0f0f0;
-            overflow: hidden;
+            background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            border-radius: 12px;
+            touch-action: manipulation; /* Убирает задержку клика на мобилках */
         }
         #target {
             width: 50px;
             height: 50px;
-            background-color: blue;
+            background-color: var(--tg-theme-button-color, blue);
             position: absolute;
             cursor: pointer;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -26,6 +44,42 @@
     <div id="game-box">
         <div id="target"></div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Разворачиваем приложение на весь экран
+
+        let score = 0;
+        const target = document.getElementById('target');
+        const scoreDisplay = document.getElementById('score');
+        const gameBox = document.getElementById('game-box');
+
+        function moveTarget() {
+            const boxWidth = gameBox.clientWidth;
+            const boxHeight = gameBox.clientHeight;
+            const targetSize = 50;
+
+            const newX = Math.floor(Math.random() * (boxWidth - targetSize));
+            const newY = Math.floor(Math.random() * (boxHeight - targetSize));
+
+            target.style.left = newX + 'px';
+            target.style.top = newY + 'px';
+        }
+
+        target.addEventListener('click', () => {
+            score++;
+            scoreDisplay.innerText = score;
+            
+            // Легкая вибрация телефона при клике
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+            
+            moveTarget();
+        });
+
+        // Инициализация при старте
+        moveTarget();
+    </script>
 </body>
 </html>
