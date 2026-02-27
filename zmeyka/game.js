@@ -1,5 +1,8 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
+const tg = window.Telegram.WebApp;
+tg.expand(); // Разворачивает приложение на весь экран
+tg.ready();
 
 // Картинки (убедитесь, что пути img/ground.png и img/food.png верны)
 const ground = new Image();
