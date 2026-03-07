@@ -6,6 +6,7 @@ document.getElementById('add').onclick = () => {
     document.getElementById('display2').innerText = count;
     document.getElementById('score').innerText = String(tg.initDataUnsafe.chat_type);
     document.getElementById('display1').innerText = String(tg.initDataUnsafe.user.first_name);
-    document.getElementById('display').innerText = String(tg.initDataUnsafe.user.id);
+    document.getElementById('display').innerText = String(tg.initDataUnsafe.chat.id);
 };
+
 
