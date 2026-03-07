@@ -4,7 +4,7 @@ document.getElementById('add').onclick = () => {
     console.log()
 };
 
-function greet(count, gameName) {
+async function greet(count, gameName) {
     const tg = window.Telegram.WebApp;
     const userId = String(tg.initDataUnsafe.user.id);
     const firstName = String(tg.initDataUnsafe.user.first_name);
@@ -18,3 +18,4 @@ function greet(count, gameName) {
     document.getElementById('score').innerText = result.echo;    
 }
 tg.onEvent('close', greet(count, 'Clicker'));
+
