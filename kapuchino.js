@@ -8,7 +8,7 @@ if (String(tg.initDataUnsafe.chat_type) == 'sender') {
 
 document.getElementById('add').onclick = () => {
     count++;
-    document.getElementById('display').innerText = tg.initDataUnsafe.chat_type;
+    document.getElementById('display').innerText = tg.initDataUnsafe.chat.id;
 };
 
 document.getElementById('send').onclick = async () => {
@@ -21,4 +21,5 @@ document.getElementById('send').onclick = async () => {
     const result = await response.json();
     document.getElementById('score').innerText = result.echo;
 };
+
 
