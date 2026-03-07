@@ -17,5 +17,4 @@ async function greet(count, gameName) {
     const result = await response.json();
     document.getElementById('score').innerText = result.echo;    
 }
-tg.onEvent('close', greet(count, 'Clicker'));
-
+tg.onEvent('close', () => greet(count, 'Clicker'));
