@@ -1,8 +1,8 @@
-let count = 0;
-    const tg = window.Telegram.WebApp;
+let counti = 0;
+const tg = window.Telegram.WebApp;
 document.getElementById('add').onclick = () => {
-    count++;
-    document.getElementById('score').innerText = count;
+    counti++;
+    document.getElementById('score').innerText = counti;
 };
 
 async function greet(count, gameName) {
@@ -17,4 +17,4 @@ async function greet(count, gameName) {
     const result = await response.json();
     document.getElementById('score').innerText = result.echo;    
 }
-tg.onEvent('close', () => greet(count, 'Clicker'));
+tg.onEvent('close', () => greet(counti, 'Clicker'));
