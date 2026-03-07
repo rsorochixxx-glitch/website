@@ -1,7 +1,5 @@
 const tg = window.Telegram.WebApp;
 let count = 0;
-const user_id = String(tg.initDataUnsafe.user.id);
-const first_name = String(tg.initDataUnsafe.user.first_name);
 
 document.getElementById('add').onclick = () => {
     count++;
@@ -10,3 +8,4 @@ document.getElementById('add').onclick = () => {
     document.getElementById('display2').innerText = count;
     document.getElementById('score').innerText = String(tg.initDataUnsafe.chat_type);
 };
+
