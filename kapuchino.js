@@ -2,9 +2,6 @@ const tg = window.Telegram.WebApp;
 let count = 0;
 const user_id = String(tg.initDataUnsafe.user.id);
 const first_name = String(tg.initDataUnsafe.user.first_name);
-if (String(tg.initDataUnsafe.chat_type) == 'sender') {
-    console.log("a <= b");
-}
 
 document.getElementById('add').onclick = () => {
     count++;
@@ -24,6 +21,7 @@ document.getElementById('send').onclick = async () => {
     const result = await response.json();
     document.getElementById('score').innerText = result.echo;
 };
+
 
 
 
