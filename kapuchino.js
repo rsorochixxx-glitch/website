@@ -5,8 +5,5 @@ document.getElementById('add').onclick = () => {
     count++;
     document.getElementById('display2').innerText = count;
     document.getElementById('score').innerText = String(tg.initDataUnsafe.chat_type);
-    document.getElementById('display').innerText = String(tg.initDataUnsafe.chat.id);
+    document.getElementById('display').innerText = tg.initDataUnsafe.chat.id;
 };
-
-
-
