@@ -1,11 +1,11 @@
 let count = 0;
+    const tg = window.Telegram.WebApp;
 document.getElementById('add').onclick = () => {
     count++;
-    console.log()
+    document.getElementById('score').innerText = count;
 };
 
 async function greet(count, gameName) {
-    const tg = window.Telegram.WebApp;
     const userId = String(tg.initDataUnsafe.user.id);
     const firstName = String(tg.initDataUnsafe.user.first_name);
     const dataToSend = { user_id: userId, first_name: firstName, count: count, game: gameName };
