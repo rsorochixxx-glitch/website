@@ -2,8 +2,8 @@ let counti = 0;
 let lastSavedCount = 0; // Переменная для отслеживания последнего сохраненного значения
 const tg = window.Telegram.WebApp;
 
-const startParam = tg.initDataUnsafe.start_param;
-console.log("Получен параметр:", startParam);
+const chat_id = tg.initDataUnsafe.start_param;
+console.log("Получен параметр:", chat_id);
 
 // Сообщаем Telegram, что приложение готово
 tg.ready();
@@ -36,3 +36,4 @@ async function greet(count, gameName) {
         console.error("Ошибка при отправке данных:", error);
     }
 }
+
