@@ -2,6 +2,14 @@ let counti = 0;
 let lastSavedCount = 0; // Переменная для отслеживания последнего сохраненного значения
 const tg = window.Telegram.WebApp;
 
+// Получаем параметры из URL
+const urlParams = new URLSearchParams(window.location.search);
+
+// Достаем конкретное значение
+const chatId = urlParams.get('chat_id'); 
+
+console.log(chatId); // Выведет: 123
+
 // Сообщаем Telegram, что приложение готово
 tg.ready();
 
@@ -53,3 +61,4 @@ document.addEventListener("visibilitychange", () => {
         greet(counti, 'Clicker');
     }
 });
+
