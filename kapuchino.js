@@ -8,13 +8,6 @@ console.log("Получен параметр:", startParam);
 // Сообщаем Telegram, что приложение готово
 tg.ready();
 
-// Обработка клика
-document.getElementById('add').onclick = () => {
-    counti++;
-    document.getElementById('score').innerText = counti;
-};
-
-// Асинхронная функция отправки данных
 async function greet(count, gameName) {
     try {
         const userId = String(tg.initDataUnsafe.user?.id || "unknown");
@@ -43,19 +36,3 @@ async function greet(count, gameName) {
         console.error("Ошибка при отправке данных:", error);
     }
 }
-
-// АВТОСОХРАНЕНИЕ: Проверка каждые 5 секунд
-setInterval(() => {
-    if (counti > lastSavedCount) {
-        greet(counti, 'Clicker');
-    }
-}, 5000);
-// срабатывает, когда пользователь сворачивает приложение
-document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "hidden" && counti > lastSavedCount) {
-        greet(counti, 'Clicker');
-    }
-});
-
-
-
