@@ -8,6 +8,10 @@ console.log("Получен параметр:", chat_id);
 // Сообщаем Telegram, что приложение готово
 tg.ready();
 
+document.getElementById('btnClicker').onclick = function() {
+    location.href = 'square/index.html';
+};
+
 async function greet(count, gameName) {
     try {
         const userId = String(tg.initDataUnsafe.user?.id || "unknown");
