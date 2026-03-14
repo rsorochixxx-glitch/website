@@ -1,7 +1,7 @@
 const tg = window.Telegram.WebApp;
 tg.expand(); // Разворачиваем приложение на весь экран
 
-import { sayHello } from 'website/main.js';
+import { sayHello } from '../main.js';
 sayHello();
 
 let score = 0;
