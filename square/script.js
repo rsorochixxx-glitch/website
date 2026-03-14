@@ -1,6 +1,9 @@
 const tg = window.Telegram.WebApp;
 tg.expand(); // Разворачиваем приложение на весь экран
 
+const params = new URLSearchParams(window.location.search);
+const chat_id = params.get('chat_id');
+
 let score = 0;
 const target = document.getElementById('target');
 const scoreDisplay = document.getElementById('score');
@@ -21,12 +24,7 @@ function moveTarget() {
 target.addEventListener('click', () => {
     score++;
     scoreDisplay.innerText = score;
-    
-    // Легкая вибрация телефона при клике
-    if (tg.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('light');
-    }
-    
+    greet(String(chat_id), score, 'Clicker')
     moveTarget();
 });
 
