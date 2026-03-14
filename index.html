@@ -5,8 +5,18 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <a class="btn" href="square/index.html" id="btnClicker">Clicker</a>
+    <a class="btn" id="btnClicker">Clicker</a>
     <a id="btnSnake" class="btn btn-secondary">Snake</a>
-    <script type="module" src="main.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        const chat_id = tg.initDataUnsafe.start_param;
+        document.getElementById('btnClicker').onclick = function() {
+        location.href = `square/index.html?chat_id=${chat_id}`;
+        };
+        
+        document.getElementById('btnSnake').onclick = function() {
+            location.href = `snake/snake.html?chat_id=${chat_id}`;
+        };
+    </script>
 </body>
 </html>
