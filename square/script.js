@@ -1,4 +1,3 @@
-const tg = window.Telegram.WebApp;
 tg.expand(); // Разворачиваем приложение на весь экран
 
 const params = new URLSearchParams(window.location.search);
