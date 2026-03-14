@@ -3,18 +3,10 @@ let lastSavedCount = 0; // Переменная для отслеживания 
 const tg = window.Telegram.WebApp;
 
 const chat_id = tg.initDataUnsafe.start_param;
-console.log("Получен параметр:", chat_id);
+export chat_id;
 
 // Сообщаем Telegram, что приложение готово
 tg.ready();
-
-document.getElementById('btnClicker').onclick = function() {
-    location.href = 'square/index.html';
-};
-
-document.getElementById('btnSnake').onclick = function() {
-    location.href = 'snake/snake.html';
-};
 
 export function sayHello() {
     console.log("Привет!");
