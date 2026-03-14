@@ -1,13 +1,8 @@
 const tg = window.Telegram.WebApp;
 tg.expand(); // Разворачиваем приложение на весь экран
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const chat_idi = urlParams.get('chat_id'); // "123"
-sayHello();
-console.log("Получен параметр:", chat_idi);
-console.log("Окак:", chat_id);
-
+import * as myModule from "../main.js";
+myModule.sayHello();
 
 let score = 0;
 const target = document.getElementById('target');
