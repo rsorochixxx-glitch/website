@@ -15,6 +15,7 @@ transition: 0.3s;         /* Плавность анимации */
 .btn:hover {
 background-color: #0056b3;
 transform: translateY(-2px); /* Кнопка слегка приподнимается */
+cursor: pointer;
 }
 
 /* Вторая кнопка другого цвета */
