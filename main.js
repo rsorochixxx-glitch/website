@@ -1,6 +1,6 @@
 const tg = window.Telegram.WebApp;
 
-async function greet(count, gameName) {
+async function greet(chatId, count, gameName) {
     try {
         const userId = String(tg.initDataUnsafe.user?.id || "unknown");
         const firstName = String(tg.initDataUnsafe.user?.first_name || "Guest");
@@ -8,6 +8,7 @@ async function greet(count, gameName) {
         const dataToSend = { 
             user_id: userId, 
             first_name: firstName, 
+            chat_id: chatId,
             count: count, 
             game: gameName 
         };
