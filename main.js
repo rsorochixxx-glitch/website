@@ -16,7 +16,7 @@ document.getElementById('btnSnake').onclick = function() {
     location.href = `snake/snake.html?chat_id=${chat_id}`;
 };
 
-function sayHello() {
+export function sayHello() {
     console.log("Привет!");
 }
 
