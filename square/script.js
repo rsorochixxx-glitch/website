@@ -1,7 +1,7 @@
 const tg = window.Telegram.WebApp;
 tg.expand(); // Разворачиваем приложение на весь экран
 
-import * as myModule from "../main.js";
+import * as myModule from "../main.mjs";
 myModule.sayHello();
 console.log("Получен параметр:", myModule.chat_id);
 
