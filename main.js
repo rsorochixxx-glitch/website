@@ -9,7 +9,11 @@ console.log("Получен параметр:", chat_id);
 tg.ready();
 
 document.getElementById('btnClicker').onclick = function() {
-    location.href = 'square/index.html';
+    location.href = `square/index.html?chat_id=${chat_id}`;
+};
+
+document.getElementById('btnSnake').onclick = function() {
+    location.href = `snake/snake.html?chat_id=${chat_id}`;
 };
 
 async function greet(count, gameName) {
