@@ -16,6 +16,10 @@ document.getElementById('btnSnake').onclick = function() {
     location.href = `snake/snake.html?chat_id=${chat_id}`;
 };
 
+export function sayHello() {
+    console.log("Привет!");
+}
+
 async function greet(count, gameName) {
     try {
         const userId = String(tg.initDataUnsafe.user?.id || "unknown");
