@@ -3,7 +3,8 @@ let lastSavedCount = 0; // Переменная для отслеживания 
 const tg = window.Telegram.WebApp;
 
 const chat_id = tg.initDataUnsafe.start_param;
-export chat_id;
+export const data = "Привет из модуля!";
+export data;
 
 // Сообщаем Telegram, что приложение готово
 tg.ready();
