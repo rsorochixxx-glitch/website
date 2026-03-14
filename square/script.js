@@ -3,6 +3,7 @@ tg.expand(); // Разворачиваем приложение на весь э
 
 import * as myModule from "../main.js";
 myModule.sayHello();
+console.log("Получен параметр:", myModule.chat_id);
 
 let score = 0;
 const target = document.getElementById('target');
