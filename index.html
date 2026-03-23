@@ -9,9 +9,7 @@
     <a id="btnSnake" class="btn btn-secondary">Snake</a>
     <script>
         const tg = window.Telegram.WebApp;
-        const chat_id, message_id = String(tg.initDataUnsafe.start_param).split('&');
-        console.log(chat_id);
-        console.log(message_id);
+        const chat_id = tg.initDataUnsafe.start_param;
         document.getElementById('btnClicker').onclick = function() {
         location.href = `square/index.html?chat_id=${chat_id}`;
         };
