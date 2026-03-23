@@ -10,6 +10,7 @@
     <script>
         const tg = window.Telegram.WebApp;
         const chat_id = tg.initDataUnsafe.start_param;
+        console.log(chat_id);
         document.getElementById('btnClicker').onclick = function() {
         location.href = `square/index.html?chat_id=${chat_id}`;
         };
