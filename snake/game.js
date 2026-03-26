@@ -1,10 +1,11 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-const tg = window.Telegram.WebApp;
 tg.expand(); // Разворачивает приложение на весь экран
 tg.ready();
 
-// Картинки (убедитесь, что пути img/ground.png и img/food.png верны)
+const params = new URLSearchParams(window.location.search);
+const chat_id = params.get('chat_id');
+
 const ground = new Image();
 ground.src = "img/ground.png";
 const foodImg = new Image();
@@ -95,8 +96,8 @@ function gameOver() {
     ctx.font = "45px Arial";
     ctx.fillText("ИГРА ОКОНЧЕНА", canvas.width / 2, canvas.height / 2);
     ctx.font = "20px Arial";
-    ctx.fillText("Нажми 'R' или свайпни для рестарта", canvas.width / 2, canvas.height / 2 + 40);
-
+    //ctx.fillText("Нажми 'R' или свайпни для рестарта", canvas.width / 2, canvas.height / 2 + 40);
+    greet(String(chat_id), score, 'Snake')
     // Рестарт для мобилок по тапу после проигрыша
     canvas.addEventListener('click', () => location.reload(), {once: true});
 }
