@@ -1,6 +1,6 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-tg.expand(); // Разворачивает приложение на весь экран
+tg.expand();
 tg.ready();
 
 const params = new URLSearchParams(window.location.search);
@@ -14,12 +14,13 @@ foodImg.src = "img/food.png";
 const box = 32;
 let score = 0;
 let dir;
-let changingDirection = false; // Блокировка двойного поворота
+let changingDirection = false;
 
 let snake = [];
 snake[0] = { x: 9 * box, y: 10 * box };
+// Для плавности нам нужно помнить, где была голова до шага
+let oldSnake = [{ x: 9 * box, y: 10 * box }]; 
 
-// Умная генерация еды (не внутри змейки)
 function generateFood() {
     let newFood;
     while (true) {
@@ -40,7 +41,6 @@ function generateFood() {
 
 let food = generateFood();
 
-// Управление направлением (с защитой)
 function setDir(newDir) {
     if (changingDirection) return;
     if (newDir == "left" && dir != "right") dir = "left";
@@ -50,17 +50,15 @@ function setDir(newDir) {
     changingDirection = true;
 }
 
-
-// Клавиатура
+// --- Управление (без изменений) ---
 document.addEventListener("keydown", event => {
     if (event.keyCode == 37) setDir("left");
     else if (event.keyCode == 38) setDir("up");
     else if (event.keyCode == 39) setDir("right");
     else if (event.keyCode == 40) setDir("down");
-    else if (event.keyCode == 82) location.reload(); // 'R' для рестарта
+    else if (event.keyCode == 82) location.reload();
 });
 
-// Свайпы для мобилок
 let touchX, touchY;
 document.addEventListener('touchstart', e => {
     touchX = e.changedTouches[0].screenX;
@@ -70,74 +68,98 @@ document.addEventListener('touchstart', e => {
 document.addEventListener('touchend', e => {
     let xDiff = e.changedTouches[0].screenX - touchX;
     let yDiff = e.changedTouches[0].screenY - touchY;
-
-    // Проверяем, какой жест был длиннее: по горизонтали или вертикали
     if (Math.abs(xDiff) > Math.abs(yDiff)) {
-        // Движение по горизонтали
-        if (xDiff > 0) setDir("right");
-        else setDir("left");
+        if (xDiff > 0) setDir("right"); else setDir("left");
     } else {
-        // Движение по вертикали
-        if (yDiff > 0) setDir("down");
-        else setDir("up");
+        if (yDiff > 0) setDir("down"); else setDir("up");
     }
 }, false);
-
-// Отключаем скролл при игре
 document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
 function gameOver() {
     tg.HapticFeedback.notificationOccurred("error");
-    clearInterval(gameInterval);
+    isGameOver = true; // Останавливаем цикл
     ctx.fillStyle = "rgba(0,0,0,0.7)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
     ctx.font = "45px Arial";
     ctx.fillText("ИГРА ОКОНЧЕНА", canvas.width / 2, canvas.height / 2);
-    ctx.font = "20px Arial";
-    //ctx.fillText("Нажми 'R' или свайпни для рестарта", canvas.width / 2, canvas.height / 2 + 40);
-    greet(String(chat_id), score, 'Snake')
-    // Рестарт для мобилок по тапу после проигрыша
+    if (typeof greet === 'function') greet(String(chat_id), score, 'Snake');
     canvas.addEventListener('click', () => location.reload(), {once: true});
 }
 
-function drawGame() {
-    ctx.drawImage(ground, 0, 0);
-    ctx.drawImage(foodImg, food.x, food.y);
+// --- Логика плавности ---
+let lastStepTime = 0;
+const stepInterval = 150; // Скорость игры (мс на одну клетку)
+let isGameOver = false;
 
-    for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i == 0 ? "green" : "red";
-        ctx.fillRect(snake[i].x, snake[i].y, box, box);
-    }
-
-    ctx.fillStyle = "white";
-    ctx.font = "50px Arial";
-    ctx.fillText(score, box * 2.5, box * 1.7);
+function updateLogic() {
+    oldSnake = JSON.parse(JSON.stringify(snake)); // Сохраняем копию перед сдвигом
 
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
 
-    if (snakeX == food.x && snakeY == food.y) {
-        score++;
-        food = generateFood();
-        tg.HapticFeedback.selectionChanged(); 
-    } else {
-        snake.pop();
-    }
-    // Движение
     if (dir == "left") snakeX -= box;
     if (dir == "right") snakeX += box;
     if (dir == "up") snakeY -= box;
     if (dir == "down") snakeY += box;
+
     let newHead = { x: snakeX, y: snakeY };
-    // Проверка границ и хвоста
+
     if (snakeX < box || snakeX > box * 17 || snakeY < 3 * box || snakeY > box * 17 ||
         snake.some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
         gameOver();
         return;
     }
+
+    if (snakeX == food.x && snakeY == food.y) {
+        score++;
+        food = generateFood();
+        tg.HapticFeedback.selectionChanged();
+    } else {
+        snake.pop();
+    }
+
     snake.unshift(newHead);
-    changingDirection = false; // Сброс блокировки поворота
+    changingDirection = false;
 }
-let gameInterval = setInterval(drawGame, 200);
+
+function draw(currentTime) {
+    if (isGameOver) return;
+    requestAnimationFrame(draw);
+
+    if (!lastStepTime) lastStepTime = currentTime;
+    const progress = (currentTime - lastStepTime) / stepInterval;
+
+    if (progress >= 1) {
+        updateLogic();
+        lastStepTime = currentTime;
+    }
+
+    // Отрисовка
+    ctx.drawImage(ground, 0, 0);
+    ctx.drawImage(foodImg, food.x, food.y);
+
+    // Рисуем змейку с интерполяцией
+    for (let i = 0; i < snake.length; i++) {
+        let x = snake[i].x;
+        let y = snake[i].y;
+
+        // Если есть предыдущее положение (движение), считаем промежуточную точку
+        if (oldSnake[i]) {
+            x = oldSnake[i].x + (snake[i].x - oldSnake[i].x) * Math.min(progress, 1);
+            y = oldSnake[i].y + (snake[i].y - oldSnake[i].y) * Math.min(progress, 1);
+        }
+
+        ctx.fillStyle = i == 0 ? "green" : "red";
+        ctx.fillRect(x, y, box, box);
+    }
+
+    ctx.fillStyle = "white";
+    ctx.font = "50px Arial";
+    ctx.fillText(score, box * 2.5, box * 1.7);
+}
+
+// Запуск основного цикла
+requestAnimationFrame(draw);
