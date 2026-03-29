@@ -13,13 +13,15 @@ const box = 32;
 let score = 0;
 let dir = null;
 let nextDir = null; 
+let gameActive = true;
 
+// Змейка (начальная позиция)
 let snake = [{ x: 9 * box, y: 10 * box }];
-let food = generateFood();
+let oldSnake = JSON.parse(JSON.stringify(snake));
 
 // Настройки плавности
-let progress = 0; // Прогресс движения между клетками (от 0 до 1)
-const speed = 0.15; // Скорость: чем выше, тем быстрее змейка (0.1 - медленно, 0.2 - быстро)
+let progress = 0; 
+const speed = 0.15; // Скорость (0.1 - медленно, 0.2 - быстро)
 
 function generateFood() {
     let newFood;
@@ -37,14 +39,19 @@ function generateFood() {
         if (!isCollision) return newFood;
     }
 }
+let food = generateFood();
 
 function setDir(newDir) {
     if (newDir == "left" && dir != "right") nextDir = "left";
     else if (newDir == "right" && dir != "left") nextDir = "right";
     else if (newDir == "up" && dir != "down") nextDir = "up";
     else if (newDir == "down" && dir != "up") nextDir = "down";
+    
+    // Если игра еще не началась (стоит на месте), запускаем движение сразу
+    if (!dir) dir = nextDir; 
 }
 
+// КЛАВИАТУРА
 document.addEventListener("keydown", e => {
     if (e.keyCode == 37) setDir("left");
     else if (e.keyCode == 38) setDir("up");
@@ -52,16 +59,31 @@ document.addEventListener("keydown", e => {
     else if (e.keyCode == 40) setDir("down");
 });
 
-// Добавим переменные для хранения предыдущего состояния для интерполяции
-let oldSnake = JSON.parse(JSON.stringify(snake));
+// СВАЙПЫ (ДЛЯ МОБИЛОК)
+let touchX, touchY;
+document.addEventListener('touchstart', e => {
+    touchX = e.changedTouches[0].screenX;
+    touchY = e.changedTouches[0].screenY;
+}, { passive: false });
+
+document.addEventListener('touchend', e => {
+    let xDiff = e.changedTouches[0].screenX - touchX;
+    let yDiff = e.changedTouches[0].screenY - touchY;
+
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff > 0) setDir("right"); else setDir("left");
+    } else {
+        if (yDiff > 0) setDir("down"); else setDir("up");
+    }
+}, { passive: false });
+
+document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
 function updateLogic() {
-    oldSnake = JSON.parse(JSON.stringify(snake)); // Сохраняем позиции до шага
-    
+    oldSnake = JSON.parse(JSON.stringify(snake));
     dir = nextDir;
-    if (!dir) return;
 
-    let snakeX = snake[0].x;
+    let snakeX = snake[0].x; // Исправлено: берем голову из массива
     let snakeY = snake[0].y;
 
     if (dir == "left") snakeX -= box;
@@ -71,7 +93,7 @@ function updateLogic() {
 
     let newHead = { x: snakeX, y: snakeY };
 
-    // Проверки
+    // Границы и столкновения
     if (snakeX < box || snakeX > box * 17 || snakeY < 3 * box || snakeY > box * 17 ||
         snake.some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
         gameOver();
@@ -89,6 +111,8 @@ function updateLogic() {
 }
 
 function draw() {
+    if (!gameActive) return;
+
     ctx.drawImage(ground, 0, 0);
     ctx.drawImage(foodImg, food.x, food.y);
 
@@ -100,12 +124,12 @@ function draw() {
         }
     }
 
-    // Рисование змейки с интерполяцией (плавным переходом)
+    // Отрисовка змейки
     for (let i = 0; i < snake.length; i++) {
         let current = snake[i];
-        let previous = oldSnake[i] || current; // Если сегмент новый (вырос), берем текущую поз.
+        let previous = oldSnake[i] || current;
 
-        // Вычисляем промежуточную позицию
+        // Плавная координата
         let drawX = previous.x + (current.x - previous.x) * progress;
         let drawY = previous.y + (current.y - previous.y) * progress;
 
@@ -114,13 +138,12 @@ function draw() {
     }
 
     ctx.fillStyle = "white";
-    ctx.font = "50px Arial";
-    ctx.fillText(score, box * 2.5, box * 1.7);
+    ctx.font = "40px Arial";
+    ctx.fillText(score, box * 2.5, box * 1.6);
 
-    if (gameActive) requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
 }
 
-let gameActive = true;
 function gameOver() {
     gameActive = false;
     tg.HapticFeedback.notificationOccurred("error");
@@ -128,10 +151,12 @@ function gameOver() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
-    ctx.font = "40px Arial";
+    ctx.font = "30px Arial";
     ctx.fillText("ИГРА ОКОНЧЕНА", canvas.width / 2, canvas.height / 2);
-    greet(String(chat_id), score, 'Snake');
+    
+    if(typeof greet === 'function') greet(String(chat_id), score, 'Snake');
     canvas.addEventListener('click', () => location.reload(), {once: true});
 }
 
+// Запуск анимации
 draw();
