@@ -4,28 +4,51 @@ const params = new URLSearchParams(window.location.search);
 const chat_id = params.get('chat_id');
 
 let score = 0;
+let timeLeft = 30;
+let gameActive = false;
+let countdown;
+
 const target = document.getElementById('target');
 const scoreDisplay = document.getElementById('score');
 const gameBox = document.getElementById('game-box');
 const timerDisplay = document.getElementById('timer');
-let timeLeft = 30;
-let gameActive = true;
 
-const countdown = setInterval(() => {
-    timeLeft--;
+// Функция запуска или перезапуска игры
+function startGame() {
+    score = 0;
+    timeLeft = 30;
+    gameActive = true;
+    
+    scoreDisplay.innerText = score;
     timerDisplay.innerText = timeLeft;
+    target.style.display = 'block'; // Показываем цель
+    
+    moveTarget();
 
-    if (timeLeft <= 0) {
-        clearInterval(countdown);
-        endGame();
-    }
-}, 1000);
+    // Сбрасываем старый таймер, если он был
+    clearInterval(countdown);
+    
+    countdown = setInterval(() => {
+        timeLeft--;
+        timerDisplay.innerText = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            endGame();
+        }
+    }, 1000);
+}
 
 function endGame() {
     gameActive = false;
-    target.style.display = 'none'; // Прячем цель
-    alert('Игра окончена! Ваш финальный счет: ' + score);
-    greet(String(chat_id), score, 'Clicker')
+    target.style.display = 'none';
+    
+    // Вместо простого alert создаем подтверждение
+    if (confirm('Игра окончена! Ваш счет: ' + score + '\nХотите сыграть еще раз?')) {
+        startGame();
+    }
+    
+    greet(String(chat_id), score, 'Clicker');
 }
 
 function moveTarget() {
@@ -47,4 +70,6 @@ target.addEventListener('click', () => {
     scoreDisplay.innerText = score;
     moveTarget();
 });
-moveTarget();
+
+// Запускаем игру при первой загрузке
+startGame();
